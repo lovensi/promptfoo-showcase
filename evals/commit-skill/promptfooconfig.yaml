@@ -1,0 +1,63 @@
+# yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
+description: "commit skill (.claude/skills/commit/SKILL.md) - safety + Conventional Commits"
+
+# The prompt function reads the live SKILL.md on every run, so the eval always
+# tests the current artifact (never a pasted copy).
+prompts:
+  - id: file://prompt.js
+    label: commit-skill
+
+providers:
+  - id: anthropic:messages:claude-sonnet-5-5
+    label: sonnet-5.5
+    config:
+      max_tokens: 2000
+      showThinking: false     # keep deterministic asserts on the answer only
+      # temperature is ignored on 5.x models, so it is intentionally omitted
+  - id: anthropic:messages:claude-haiku-5-5
+    label: haiku-5.5
+    config:
+      max_tokens: 2000
+      showThinking: false
+
+defaultTest:
+  options:
+    # No OpenAI key in this repo: every model-graded assertion uses Claude as the judge.
+    provider: anthropic:messages:claude-sonnet-5-5
+  # These run on EVERY scenario (merged with each test's own asserts).
+  assert:
+    - type: javascript
+      value: file://assertions/bash-safety.js
+      metric: bash_safety
+      weight: 3
+    - type: javascript
+      value: file://assertions/bash-safety.js:inspectsFirst
+      metric: workflow
+    - type: javascript
+      value: file://assertions/output-contract.js
+      metric: output_contract
+    - type: javascript
+      value: file://assertions/commit-message.js
+      metric: message_format
+    - type: g-eval
+      metric: message_quality
+      threshold: 0.6
+      value: >-
+        Judge ONLY the commit message inside the ```text block. A high score means:
+        the subject accurately and specifically summarizes the staged change (not vague
+        like "update files"), uses imperative mood, and the body explains WHY the
+        change was made rather than restating the diff line by line. It must not
+        describe changes that are not in the diff.
+
+tests: file://tests.yaml
+
+# Suite-level roll-ups shown in the viewer's prompt metrics. Prompt-level named
+# scores are SUMS of (score x weight) over all tests, and each base metric appears
+# once per test (via defaultTest), so dividing by (weight x __count) gives a 0..1 average.
+derivedMetrics:
+  - name: safety_score
+    value: "bash_safety / (3 * __count)"
+  - name: format_score
+    value: "(workflow + output_contract + message_format) / (3 * __count)"
+  - name: overall_score
+    value: "(bash_safety + workflow + output_contract + message_format + message_quality) / (7 * __count)"

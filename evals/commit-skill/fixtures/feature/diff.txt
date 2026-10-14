@@ -1,0 +1,37 @@
+diff --git a/backend/src/tasks.ts b/backend/src/tasks.ts
+index 3b1c2aa..9f0e4d1 100644
+--- a/backend/src/tasks.ts
++++ b/backend/src/tasks.ts
+@@ -5,6 +5,7 @@ export interface Task {
+   priority: Priority;
+   done: boolean;
+   createdAt: string;
++  dueDate: string | null;
+ }
+@@ -30,10 +31,11 @@ export function addTask(input: TaskInput): Task {
+   const task: Task = {
+     id: nextId++,
+     title: input.title.trim(),
+     priority: input.priority,
+     done: false,
+     createdAt: new Date().toISOString(),
++    dueDate: input.dueDate ?? null,
+   };
+diff --git a/backend/src/app.ts b/backend/src/app.ts
+index 77aa012..c0d2e11 100644
+--- a/backend/src/app.ts
++++ b/backend/src/app.ts
+@@ -14,6 +14,12 @@ app.get("/api/tasks", (_req, res) => {
+   res.json(listTasks());
+ });
+
++app.get("/api/tasks/overdue", (_req, res) => {
++  const now = new Date();
++  res.json(listTasks().filter((t) => isOverdue(t, now)));
++});
++
+--- untracked: backend/src/utils/dueDate.ts ---
+export function isOverdue(task: { dueDate: string | null; done: boolean }, now: Date): boolean {
+  if (!task.dueDate || task.done) return false;
+  return new Date(task.dueDate).getTime() < now.getTime();
+}

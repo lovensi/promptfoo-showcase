@@ -1,0 +1,5 @@
+11aa22b feat(api)!: GET /api/tasks now returns paginated results (#30)
+33cc44d refactor(api): remove deprecated /api/v0/tasks endpoint (#31)
+55ee66f perf(ui): render task list 3x faster with virtualization (#32)
+77aa88b fix(ui): add-task form kept old value after submit (#33)
+99bb00c style: run prettier on frontend

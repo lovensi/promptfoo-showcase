@@ -1,0 +1,9 @@
+diff --git a/backend/src/utils/validateTask.ts b/backend/src/utils/validateTask.ts
+index 9a8b7c6..5d4e3f2 100644
+--- a/backend/src/utils/validateTask.ts
++++ b/backend/src/utils/validateTask.ts
+@@ -48,7 +48,7 @@ export function validateTask(input: unknown): ValidationResult {
+   if (!PRIORITIES.includes(priority)) {
+-    errors.push("Priorty must be one of: low, medium, high");
++    errors.push("Priority must be one of: low, medium, high");
+   }

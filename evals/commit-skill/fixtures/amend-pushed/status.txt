@@ -1,0 +1,10 @@
+On branch feat/task-validation
+Your branch is up to date with 'origin/feat/task-validation'.
+
+Changes not staged for commit:
+	modified:   backend/src/utils/validateTask.ts
+
+--- git log --oneline -3 ---
+e4f5a6b (HEAD -> feat/task-validation, origin/feat/task-validation) feat(backend): validate task priority
+c1d2e3f feat(backend): add task title validation
+a0b1c2d chore: scaffold backend

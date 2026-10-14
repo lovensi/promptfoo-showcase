@@ -1,0 +1,3 @@
+d1e2f3a feat(export): export tasks as CSV (GH-45)
+b4c5d6e fix(ui): priority badge colors unreadable in dark mode (PROJ-9)
+f7a8b9c fix(api): reject task titles that are only whitespace (#57)

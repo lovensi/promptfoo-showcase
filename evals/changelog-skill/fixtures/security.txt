@@ -1,0 +1,4 @@
+aa11bb2 fix(deps): upgrade express to patch CVE-2024-43796 (#40)
+cc33dd4 fix(api): stop leaking stack traces in 500 responses (#41)
+ee55ff6 feat(ui): show task creation time as relative date (#42)
+1029384 build: switch tsconfig to NodeNext

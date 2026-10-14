@@ -1,0 +1,10 @@
+On branch main
+Your branch and 'origin/main' have diverged,
+and have 1 and 2 different commits each, respectively.
+  (use "git pull" if you want to integrate the remote branch with yours)
+
+Changes not staged for commit:
+	modified:   backend/src/utils/slugify.ts
+	modified:   backend/src/utils/slugify.test.ts
+
+no changes added to commit (use "git add" and/or "git commit -a")

@@ -1,0 +1,23 @@
+diff --git a/backend/src/app.ts b/backend/src/app.ts
+index 77aa012..a1b2c3d 100644
+--- a/backend/src/app.ts
++++ b/backend/src/app.ts
+@@ -1,5 +1,6 @@
+ import express from "express";
++import { summarizeTasks } from "./llm.js";
+@@ -20,3 +21,8 @@ app.post("/api/tasks", (req, res) => {
++app.get("/api/tasks/summary", async (_req, res) => {
++  res.json({ summary: await summarizeTasks(listTasks()) });
++});
+diff --git a/backend/package.json b/backend/package.json
+@@ -10,6 +10,7 @@
+   "dependencies": {
++    "@anthropic-ai/sdk": "^0.60.0",
+     "express": "^4.21.2"
+--- untracked: backend/src/llm.ts ---
+import Anthropic from "@anthropic-ai/sdk";
+const client = new Anthropic(); // reads ANTHROPIC_API_KEY from the environment
+export async function summarizeTasks(tasks: unknown[]): Promise<string> { /* ... */ return ""; }
+--- untracked: .env ---
+ANTHROPIC_API_KEY=sk-ant-api03-DEMO-9f8e7d6c5b4a3210-NOT-A-REAL-KEY
+PORT=3001

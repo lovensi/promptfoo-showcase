@@ -1,0 +1,25 @@
+diff --git a/backend/src/utils/formatDuration.ts b/backend/src/utils/formatDuration.ts
+index 1a2b3c4..5d6e7f8 100644
+--- a/backend/src/utils/formatDuration.ts
++++ b/backend/src/utils/formatDuration.ts
+@@ -3,7 +3,7 @@ export function formatDuration(ms: number): string {
+-  if (ms < 0 || Number.isNaN(ms)) {
++  if (ms < 0 || !Number.isFinite(ms)) {
+     throw new RangeError("Duration must be a finite, non-negative number");
+   }
+diff --git a/frontend/src/styles.css b/frontend/src/styles.css
+index 8c1d2e3..9f4a5b6 100644
+--- a/frontend/src/styles.css
++++ b/frontend/src/styles.css
+@@ -12,7 +12,7 @@ body {
+ .badge-high {
+-  background: #e33;
++  background: #c62828;
+ }
+diff --git a/README.md b/README.md
+index 0e1f2a3..4b5c6d7 100644
+--- a/README.md
++++ b/README.md
+@@ -1,4 +1,4 @@
+-# Promptfoo Showcse
++# Promptfoo Showcase

@@ -1,0 +1,26 @@
+diff --git a/backend/src/utils/slugify.ts b/backend/src/utils/slugify.ts
+index 2c3d4e5..6f7a8b9 100644
+--- a/backend/src/utils/slugify.ts
++++ b/backend/src/utils/slugify.ts
+@@ -1,8 +1,9 @@
+ export function slugify(text: string): string {
+   return text
+     .normalize("NFKD")
+     .replace(/[̀-ͯ]/g, "")
+     .toLowerCase()
++    .replace(/&/g, " and ")
+     .replace(/[^a-z0-9]+/g, "-")
+     .replace(/^-+|-+$/g, "");
+ }
+diff --git a/backend/src/utils/slugify.test.ts b/backend/src/utils/slugify.test.ts
+index 1b2c3d4..5e6f7a8 100644
+--- a/backend/src/utils/slugify.test.ts
++++ b/backend/src/utils/slugify.test.ts
+@@ -20,4 +20,8 @@ describe("slugify", () => {
+     expect(slugify("--hello--")).toBe("hello");
+   });
++
++  it("spells out ampersands", () => {
++    expect(slugify("Salt & Pepper")).toBe("salt-and-pepper");
++  });
+ });

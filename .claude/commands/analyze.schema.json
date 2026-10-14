@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AnalyzeReport",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["target", "summary", "risk_level", "findings", "metrics", "next_steps"],
+  "properties": {
+    "target": { "type": "string", "minLength": 1 },
+    "summary": { "type": "string", "minLength": 1 },
+    "risk_level": { "type": "string", "enum": ["low", "medium", "high"] },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["severity", "category", "file", "line", "description", "recommendation"],
+        "properties": {
+          "severity": { "type": "string", "enum": ["info", "low", "medium", "high"] },
+          "category": {
+            "type": "string",
+            "enum": ["bug", "security", "performance", "maintainability", "testing"]
+          },
+          "file": { "type": "string", "minLength": 1 },
+          "line": { "type": ["integer", "null"], "minimum": 1 },
+          "description": { "type": "string", "minLength": 1 },
+          "recommendation": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["files_analyzed", "findings_count"],
+      "properties": {
+        "files_analyzed": { "type": "integer", "minimum": 0 },
+        "findings_count": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "next_steps": { "type": "array", "items": { "type": "string" } }
+  }
+}

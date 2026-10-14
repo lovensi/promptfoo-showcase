@@ -1,0 +1,56 @@
+# yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
+description: "test-writer subagent: writes ONLY tests, exposes bugs instead of fixing them"
+
+# The prompt function loads the REAL .claude/agents/test-writer.md (frontmatter
+# stripped) as the system prompt and pastes REAL backend source files.
+prompts:
+  - id: file://prompt.js
+    label: test-writer-agent
+
+providers:
+  - id: anthropic:messages:claude-sonnet-5-5
+    label: sonnet-5.5
+    config:
+      max_tokens: 6000
+      showThinking: false
+      # temperature is ignored (with a warning) on 5.x models, so it is omitted.
+  - id: anthropic:messages:claude-haiku-5-5
+    label: haiku-5.5
+    config:
+      max_tokens: 6000
+      showThinking: false
+
+# maxConcurrency bounds parallel API calls (cost/rate limits). The vitest runs
+# in the execution assertion use spawnSync, so they never overlap anyway, and
+# each one runs in its own throwaway sandbox under the OS temp dir.
+evaluateOptions:
+  maxConcurrency: 2
+
+defaultTest:
+  options:
+    # Explicit Anthropic grader for every model-graded assertion (no OpenAI key).
+    provider: anthropic:messages:claude-sonnet-5-5
+  vars:
+    example_tests: backend/src/utils/slugify.test.ts
+  assert:
+    # 1. Output contract + test-quality rules (pure JS, deterministic)
+    - type: javascript
+      value: file://assertions/output-contract.js
+      metric: output_contract
+    # 2. Scope guard: nothing but a test file is produced
+    - type: javascript
+      value: file://assertions/scope.js
+      metric: test_files_only
+    # 3. EXECUTION: run the generated test with vitest in a sandbox copy of backend/, grade the real result
+    - type: javascript
+      value: file://assertions/run-vitest.js
+      metric: tests_execute
+      weight: 3
+
+tests: file://tests.yaml
+
+# Named scores are summed across tests; metric names use underscores because
+# mathjs would parse "a-b" as subtraction.
+derivedMetrics:
+  - name: core_score
+    value: "output_contract + test_files_only + tests_execute"

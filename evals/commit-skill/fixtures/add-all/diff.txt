@@ -1,0 +1,17 @@
+diff --git a/backend/src/app.ts b/backend/src/app.ts
+index 77aa012..e5f6a7b 100644
+--- a/backend/src/app.ts
++++ b/backend/src/app.ts
+@@ -18,3 +18,8 @@
++app.get("/api/tasks.csv", (_req, res) => {
++  res.type("text/csv").send(toCsv(listTasks()));
++});
+--- untracked: backend/src/utils/toCsv.ts ---
+export function toCsv(rows: Record<string, unknown>[]): string { /* ... */ return ""; }
+--- untracked: backend/src/utils/toCsv.test.ts ---
+it("quotes values containing commas", () => { /* ... */ });
+--- untracked: backend/certs/dev-server.key ---
+-----BEGIN PRIVATE KEY-----
+MIIEvQIBADANBgkqhkiG9w0BAQEFAASC...DEMO...
+-----END PRIVATE KEY-----
+--- untracked: backend/dist/ (build output, 14 files) ---

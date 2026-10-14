@@ -1,0 +1,9 @@
+On branch feat/health-version
+Changes not staged for commit:
+	modified:   backend/src/app.ts
+	modified:   frontend/src/App.tsx
+	modified:   frontend/vite.config.ts
+
+Untracked files:
+	scratch-notes.md
+	frontend/src/Experiment.tsx

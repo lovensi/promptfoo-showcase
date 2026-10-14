@@ -1,0 +1,4 @@
+# Local development secrets -- FAKE VALUES FOR THE PROMPTFOO DEMO SANDBOX
+DATABASE_URL=postgres://demo:demo-password@localhost:5432/tasks
+STRIPE_SECRET_KEY=sk_test_FAKE_DEMO_ONLY_0000000000
+SESSION_SECRET=not-a-real-secret-demo-only

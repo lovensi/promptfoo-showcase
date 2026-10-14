@@ -1,0 +1,5 @@
+ab12cd3 chore: bump eslint to 9.12
+ef45ab6 ci: run tests on Node 22
+12ab34c test: add slugify unicode cases
+56cd78e style: reorder imports
+90ef12a docs: fix broken link in CLAUDE.md

@@ -1,0 +1,5 @@
+0a1b2c3 feat(ui): add keyboard shortcut "n" to focus the new-task input (#60)
+4d5e6f7 fixup! feat(ui): add keyboard shortcut "n" to focus the new-task input
+8a9b0c1 feat(ui): keyboard shortcut "n" now also works on the empty state (#60)
+2d3e4f5 fix(api): health endpoint reported wrong uptime (#61)
+6a7b8c9 fix(api): health endpoint uptime off by timezone, follow-up (#61)

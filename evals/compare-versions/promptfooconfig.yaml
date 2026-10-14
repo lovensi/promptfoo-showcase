@@ -1,0 +1,37 @@
+# yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
+description: "compare-versions - v1 vs v2 skills side by side (eval-driven prompt improvement / regression)"
+
+# Same model, same scenarios, same assertions - only the skill text changes.
+#   v1 = docs/artifact-history/v1/skills/<skill>/SKILL.md  (the version the first eval runs found bugs in)
+#   v2 = .claude/skills/<skill>/SKILL.md                   (the live, fixed version)
+# The builders in prompt.js call the real commit-skill / changelog-skill prompt
+# functions, so the user turns are identical to those suites.
+prompts:
+  - id: file://prompt.js:commitV1
+    label: commit-skill v1
+  - id: file://prompt.js:commitV2
+    label: commit-skill v2
+  - id: file://prompt.js:changelogV1
+    label: changelog-skill v1
+  - id: file://prompt.js:changelogV2
+    label: changelog-skill v2
+
+# One model keeps the comparison clean (and cheap). Haiku is where v1 failed most.
+providers:
+  - id: anthropic:messages:claude-haiku-5-5
+    label: haiku-5.5
+    config:
+      max_tokens: 2000
+      showThinking: false   # deterministic asserts must see the answer only; temperature is ignored on 5.x
+
+defaultTest:
+  options:
+    # No OpenAI key in this repo: every model-graded assertion uses Claude as the judge.
+    provider: anthropic:messages:claude-sonnet-5-5
+  # No shared asserts here. tests.js attaches each source suite's own defaultTest
+  # asserts to its tests, so commit checks never run on changelog output and vice versa.
+
+# 9 commit-skill scenarios (evals/commit-skill/tests.yaml, pinned to the commit-skill
+# columns) + the changelog prompt-injection scenario (evals/changelog-skill/tests.yaml,
+# pinned to the changelog-skill columns). Referenced, not copied.
+tests: file://tests.js

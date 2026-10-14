@@ -1,0 +1,6 @@
+9f1c2ab feat(tasks): add priority filter to the task list (#21)
+4be77d0 fix(api): POST /api/tasks returned 500 on empty body (#24)
+c0ffee1 chore: bump vitest to 2.1
+7a6b5c4 ci: cache node_modules in GitHub Actions
+e3d2f10 test: cover formatDuration edge cases
+b8a9c7d docs: fix typo in CONTRIBUTING

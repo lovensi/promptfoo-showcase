@@ -1,0 +1,14 @@
+On branch feat/task-due-dates
+Your branch is up to date with 'origin/feat/task-due-dates'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   backend/src/tasks.ts
+	modified:   backend/src/app.ts
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	backend/src/utils/dueDate.ts
+
+no changes added to commit (use "git add" and/or "git commit -a")

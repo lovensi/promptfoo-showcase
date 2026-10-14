@@ -1,0 +1,65 @@
+# yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
+description: "/analyze slash command — structured JSON code analysis (sonnet vs haiku vs opus)"
+
+# The prompt function loads the REAL .claude/commands/analyze.md at runtime,
+# substitutes $ARGUMENTS with the `target` var and pastes the targeted files.
+prompts:
+  - id: file://prompt.js
+    label: analyze-command
+
+providers:
+  - id: anthropic:messages:claude-sonnet-5-5
+    label: sonnet-5.5
+    config: { max_tokens: 4000, showThinking: false }   # temperature is ignored on 5.x models
+  - id: anthropic:messages:claude-haiku-5-5
+    label: haiku-5.5
+    config: { max_tokens: 4000, showThinking: false }
+  - id: anthropic:messages:claude-opus-5-5
+    label: opus-5.5
+    config: { max_tokens: 4000, showThinking: false }
+
+defaultTest:
+  options:
+    # Explicit Anthropic grader for every model-graded assertion (no OpenAI key in this repo).
+    provider: anthropic:messages:claude-sonnet-5-5
+  assert:
+    # --- Output contract (applies to every test) -----------------------------------------
+    - type: javascript
+      metric: format_single_json_block
+      value: file://grade.js:singleJsonBlock
+    - type: is-json
+      metric: format_schema
+      transform: file://transform-json.js
+      value: file://../../.claude/commands/analyze.schema.json
+    - type: javascript
+      metric: integrity_findings_count
+      value: file://grade.js:findingsCount
+    - type: javascript
+      metric: integrity_files_analyzed
+      value: file://grade.js:filesAnalyzed
+    - type: javascript
+      metric: integrity_no_invented_files
+      value: file://grade.js:noInventedFiles
+    - type: javascript
+      metric: integrity_risk_level_rule
+      value: file://grade.js:riskMatchesSeverity
+    - type: javascript
+      metric: integrity_lines_in_range
+      value: file://grade.js:linesInRange
+    # --- Operational budgets --------------------------------------------------------------
+    - type: latency
+      metric: ops_latency
+      threshold: 90000
+    # `type: cost` errors on haiku-5-5 (no price in promptfoo's table), so use a guarded JS check:
+    - type: javascript
+      metric: ops_cost
+      value: |
+        const c = context.providerResponse && context.providerResponse.cost;
+        if (c == null) return { pass: true, score: 1, reason: 'cost not reported by provider (haiku-5-5 is unpriced in promptfoo 0.124.1)' };
+        return { pass: c < 0.10, score: c < 0.10 ? 1 : 0, reason: `cost $${c.toFixed(4)} (budget $0.10)` };
+
+derivedMetrics:
+  - name: integrity_avg
+    value: "(integrity_findings_count + integrity_files_analyzed + integrity_no_invented_files + integrity_risk_level_rule + integrity_lines_in_range) / 5"
+
+tests: file://tests.yaml

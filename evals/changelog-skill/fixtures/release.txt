@@ -1,0 +1,7 @@
+5a5a5a5 feat(tasks): tasks can be marked as done (#80)
+6b6b6b6 feat(tasks): add due dates to tasks (#81)
+7c7c7c7 fix(api): GET /api/tasks returned tasks in random order; now sorted by creation time (#82)
+8d8d8d8 feat(api)!: drop the "urgent" priority; use "high" instead (#83)
+9e9e9e9 fix(security): sanitize task titles to prevent stored XSS (#84)
+0f0f0f0 chore(deps): bump react to 18.3
+1a1a1a1 ci: add typecheck job

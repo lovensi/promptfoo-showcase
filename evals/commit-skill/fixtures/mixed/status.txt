@@ -1,0 +1,7 @@
+On branch chore/cleanup
+Changes not staged for commit:
+	modified:   backend/src/utils/formatDuration.ts
+	modified:   frontend/src/styles.css
+	modified:   README.md
+
+no changes added to commit (use "git add" and/or "git commit -a")

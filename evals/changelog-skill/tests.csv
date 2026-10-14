@@ -1,0 +1,7 @@
+__description,commits,expected_sections,must_not_mention,__expected,__metadata:category
+"[csv] Mixed feat/fix with chore, ci, test and docs noise",file://fixtures/basic.txt,21:Added;24:Fixed,vitest|GitHub Actions|formatDuration|CONTRIBUTING,"regex:### Added\n(?:- [^\n]*\n)*- [^\n]*\(#21\)",section-mapping
+"[csv] Breaking change, removal and perf land in Changed/Removed",file://fixtures/breaking-removal.txt,30:Changed!;31:Removed;32:Changed;33:Fixed,prettier,"contains:**BREAKING:**",section-mapping
+"[csv] CVE upgrade goes to Security, build commit dropped",file://fixtures/security.txt,40:Security;41:Security|Fixed;42:Added,tsconfig|NodeNext,"regex:### Security\n(?:- [^\n]*\n)*- [^\n]*CVE-2024-43796",section-mapping
+"[csv] Only chores -> explicit 'no user-facing changes' line",file://fixtures/chores-only.txt,,eslint|Node 22|slugify|imports|CLAUDE.md,"contains:_No user-facing changes._",exclusion
+"[csv] Non-numeric issue refs (GH-45, PROJ-9) preserved verbatim",file://fixtures/mixed-refs.txt,GH-45:Added;PROJ-9:Fixed;57:Fixed,,"contains-all:(GH-45),(PROJ-9),(#57)",refs
+"[csv] Duplicate and fixup! commits merged into one bullet each",file://fixtures/duplicates.txt,60:Added;61:Fixed,fixup|follow-up,"not-icontains:fixup",dedupe
